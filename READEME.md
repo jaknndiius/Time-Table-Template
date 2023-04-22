@@ -53,8 +53,8 @@ new SubjectList(subjectName: string, teachers: string[], options: Object = {}) :
 
 - 수1, 수2와 과목 이름은 같지만 세분화 되는 과목을 생성할 때 사용하세요.
 - `SubjectList`는 생성 시 함수를 반환합니다.
-- 함수는 `order`를 받고, 해당 순서의 선생님과 과목명을 가공하여 접미사를 붙여 `MultipleSubject`로 만들어 반환합니다.
-- `order`는 `1`부터 시작하며 `teachers` 로 접미사가 붙습니다.
+- 함수는 `order`를 받고, 해당 순서의 선생님과 과목명으로 `MultipleSubject`를 만들어 반환합니다.
+- `order`는 `1`부터 시작하며 과목의 첫 글자와 접미사가 붙어 표시됩니다.
 - `SubjectList`로 생성된 과목은 기본적으로 표시될 때 과목 앞글자와 숫자를 붙여 표시되며 이는 `options`로 변경 가능합니다.
 - `options`는 생략 가능하며, 화면에 표시되는 이름을 변경할 수 있습니다.
 - `options`에는 `suffixType`과 `fullName` 항목을 설정할 수 있습니다.
