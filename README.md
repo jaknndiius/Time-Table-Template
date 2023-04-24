@@ -104,8 +104,8 @@ console.log(`표시:${Info(2)}, 선생님:${Info(2).teacher}`);
 ```
 
 - 과목은 `Subject`, `SubjectList`, `MultipleSubject` 모두 가능합니다.
-- `SubjectList`에는 '문학' 처럼 복수 과목이지만 따로 시험을 나누지 않을 때 설정하면 되고,
-- `MultiPleSubject`에는 '수1', '수2' 처럼 시험을 나누는 과목일 때 설정하면 됩니다.
+- `SubjectList`에는 '문학' 처럼 복수 과목이지만 따로 시험을 나누지 않을 때 설정하면 되며,
+- `MultiPleSubject`에는 '수1', '수2' 처럼 복수과목인데 시험을 나누는 과목일 때 설정하면 됩니다.
 - `ExamAttribute`는 다음과 같이 생성합니다.
 - ```typescript
   new ExamAttribute(selective: number, descriptive: number)
@@ -143,7 +143,7 @@ Mathmatics(1).setExam(new ExamAttribute(16, 4).addRange("교과서 싹 다"));
 > 📌 import의 대괄호 안에 `Setting`를 추가하세요.
 
 ```typescript
-Setting.addMockTest(dateFormat: string)
+Setting.addMoakTest(dateFormat: string)
 ```
 
 - `YYYY/MM/DD 형식`으로 작성하세요. 구분자로 '`-`'을 쓰면 IOS 환경에서 오류가 발생합니다.
@@ -151,13 +151,54 @@ Setting.addMockTest(dateFormat: string)
 _예시_
 
 ```typescript
-Setting.addMockTest("2023/03/23");
-Setting.addMockTest("2023/06/01");
-Setting.addMockTest("2023/09/06");
-Setting.addMockTest("2023/11/21");
+Setting.addMoakTest("2023/03/23");
+Setting.addMoakTest("2023/06/01");
+Setting.addMoakTest("2023/09/06");
+Setting.addMoakTest("2023/11/21");
 ```
 
-### **5단계: 과목 그뤂화 밑 시간표 설정**
+### **5단계: 교시 별 시간 설정**
+
+각 교시가 시작되는 시간을 설정해야 합니다.<br>
+생략할 수 있지만, 생략하면 시간에 따라 각 교시에 맞는 과목이 강조되는 기능이 작동하지 않습니다.
+
+> 📌 import의 대괄호 안에 `Setting`를 추가하세요. 위에서 추가했다면 다시 추가하지 않아도 됩니다.
+
+```typescript
+Setting.setClassTime(className: ClassName, hours, minutes)
+```
+
+- > 📌 import의 대괄호 안에 `ClassName`를 추가하세요.
+- `ClassName` 객체를 사용하세요. `ClassName.CLASS1`~`7`, `ClassName.END`를 이용해 어느 교시의 시작 시간인지 설정할 수 있습니다.
+- 전 교시가 끝나는 시간으로 설정하는것이 좋습니다.
+- 만약, 1교시가 9:00~9:50이고, 쉬는시간이 10분, 2교시가 10:00에 시작할 때
+  `ClassName`.`CLASS2`를 10:00으로 설정하면 10:00부터 2교시 과목이 강조되지만,
+  `ClassName`.`CLASS2`를 9:50으로 설정하면 쉬는 시간부터 다음 교시인 2교시 과목이 강조되어 다음 교시를 쉽게 확인할 수 있습니다.
+- `ClassName.CLASS1`~`7`, `ClassName.END` 중 하나라도 설정하지 않으면 아예 작동되지 않습니다. 설정시 반드시 모두 작성하세요.
+
+_예시_
+
+```typescript
+Setting.setClassTime(ClassName.CLASS1, 8, 0);
+// 1교시는 아침시간 포함 -> 아침시간에도 1교시 과목이 강조됨.
+// 이 시간 전에는 강조되는 과목 없음
+Setting.setClassTime(ClassName.CLASS2, 9, 20);
+// 1교시 마치고 바로 2교시 과목이 강조됨
+Setting.setClassTime(ClassName.CLASS3, 10, 20);
+// 2교시 마치고 바로 3교시 과목이 강조됨
+Setting.setClassTime(ClassName.CLASS4, 11, 20);
+// 3교시 마치고 바로 4교시 과목이 강조됨
+Setting.setClassTime(ClassName.CLASS5, 12, 20);
+// 4교시 마치고 점심시간~5교시 동안 5교시 과목이 강조됨
+Setting.setClassTime(ClassName.CLASS6, 14, 0);
+// 5교시 마치고 바로 6교시 과목이 강조됨
+Setting.setClassTime(ClassName.CLASS7, 15, 0);
+// 6교시 마치고 바로 7교시 과목이 강조됨
+Setting.setClassTime(ClassName.END, 16, 0);
+// 이 시간 이후로는 강조되는 과목 없음.
+```
+
+### **6단계: 과목 그룹화 밑 시간표 설정**
 
 시간표를 채워넣기 위해선 과목 그룹이 필요합니다.
 
@@ -175,7 +216,7 @@ Setting.group(...subjects: ...Subject | SubjectList | MultipleSubject): SubjectG
 
 - **정규시간표**: 필수입니다. 작성하지 않을 시 정규 시간표가 덜 채워진 채 나타납니다.
   ```typescript
-  (SubjectGroup).setToRegularSchedule(day: Day)
+  SubjectGroup.setToRegularSchedule(day: Day)
   ```
   - 정규 시간표에서 해당 요일(Day)의 과목을 설정할 수 있습니다.
   - 그룹화 된 순서대로 1교시, 2교시 등으로 설정됩니다.
@@ -184,7 +225,7 @@ Setting.group(...subjects: ...Subject | SubjectList | MultipleSubject): SubjectG
   - 정규 시간표에서 과목을 클릭하면 선생님 이름을 보여줍니다.
 - **시험 시간표**: 시험이 없다면 생략가능합니다. 시험 시간표 자체가 생성되지 않습니다.
   ```typescript
-  (SubjectGrouop).setToExamSchedule(month: number. date: number)
+  SubjectGrouop.setToExamSchedule(month: number, date: number)
   ```
   - 시험 시간표에서 해당 날짜(`month`/`date`)의 과목을 설정할 수 있습니다.
   - 그룹화 된 순서대로 1교시, 2교시 등으로 설정됩니다.
@@ -212,7 +253,7 @@ Setting.group(SelfStudy, Literature(2), Mathmatics).setToExamSchedule(5, 2);
 // 자습, 문2, 수학 과목을 5월 2일 시험 시간표로 설정합니다.
 ```
 
-### **6단계: 페이지 로드하기**
+### **7단계: 페이지 로드하기**
 
 이제 설정이 완료되었다면, 페이지를 로딩할 시간입니다.
 
@@ -223,7 +264,7 @@ loadPage();
 ```
 
 - 모든 설정을 끝내고 이 함수를 실행해 주세요.
-- 호출하지 않을 시 페이지가 업데이트 되지 않습니다.
+- 호출하지 않을 시 페이지가 생성되지 않습니다.
 - 설정이 완료되기 전 호출 시 시간표가 완전히 표시되지 않을 수 있습니다.
 
 _예시_
@@ -232,7 +273,21 @@ _예시_
 loadPage();
 ```
 
-### **7단계: 사이트 만들기**
+### **8단계: 정리**
+
+필수 요소
+|필수 메소드|필요 갯수|
+|---|---|
+|[SubjectGroup.setToRegularSchedule()](#6단계-과목-그룹화-밑-시간표-설정)|5개(월~금)|
+|[loadPage()](#7단계-페이지-로드하기)|1개|
+
+| 생략 가능한 메소드                                                     | 필요 갯수       | 생략시                           |
+| ---------------------------------------------------------------------- | --------------- | -------------------------------- |
+| [Setting.setClassTime()](#5단계-교시-별-시간-설정)                     | 8개             | 시간 별 과목 강조 기능 작동 안됨 |
+| [Setting.addMockTest()](#4단계-모의고사-설정하기)                      | 모의고사 수만큼 | 모의고사 정보 칸 생성 안됨       |
+| [SubjectGrouop.setToExamSchedule()](#6단계-과목-그룹화-밑-시간표-설정) | 시험일 수만큼   | 시험 시간표 생성 안됨            |
+
+### **9단계: 사이트 만들기**
 
 이제 끝입니다.<br>
 만든 `index.html`과 `mycode.js` 파일을 호스팅 사이트에 올리면 언제든 접속 가능한 사이트를 만들수 있습니다.<br>
@@ -242,4 +297,4 @@ loadPage();
 2. 우리가 만든 `index.html`과 `mycode.js` 파일을 업로드 하세요.
 3. `Settings`의 `Pages` 탭을 누르세요.
 4. `Branch`에서 `master`와 `/(root)` 를 선택하고 `Save`를 누른 뒤 기다리세요.
-5. [ ```https://계정이름.github.io/Repository이름```/ ] 으로 접속하세요.
+5. [ ```https://계정이름.github.io/Repository이름/``` ] 으로 접속하세요.
