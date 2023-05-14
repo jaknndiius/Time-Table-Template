@@ -15,7 +15,7 @@ _만약 `mycode.js`의 파일명을 변경하고 싶다면 변경 후 `index.htm
 다음을 작성하여 import 하세요.
 
 ```typescript
-import {} from "https://jaknndiius.github.io/TimeTableAPI/timeTableAPI.js";
+import {} from "https://jaknndiius.github.io/TimeTableAPI/js/timeTableAPI.js";
 ```
 
 - 다음부터 배울 `TimeTableAPI`에서 제공하는 (클래스/함수/변수)를 쓰려면 해당 (클래스/함수/변수) 이름을 대괄호 안에 작성해야 합니다.
