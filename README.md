@@ -70,17 +70,12 @@ const Literature = new SubjectList("문학", ["000", "111", "222"]);
 // Literature[3] : 문2 | 111
 // Literature[3] : 문3 | 222
 
-const Mathmatics = new SubjectList("수학", ["aaa", "bbb", "ccc"], {
-  suffixType: SuffixType.ROMAN,
-});
+const Mathmatics = new SubjectList("수학", ["aaa", "bbb", "ccc"], { suffixType: SuffixType.ROMAN });
 // Mathmatics[1] : 수Ⅰ | aaa
 // Mathmatics[2] : 수Ⅱ | bbb
 // Mathmatics[3] : 수Ⅲ | ccc
 
-const Info = new SubjectList("정보", ["xxx", "yyy"], {
-  suffixType: SuffixType.ALPABET,
-  fullName: true,
-});
+const Info = new SubjectList("정보", ["xxx", "yyy"], { suffixType: SuffixType.ALPABET, fullName: true });
 // Info[1] : 정보A | xxx
 // Info[2] : 정보B | yyy
 ```
@@ -92,12 +87,12 @@ const Info = new SubjectList("정보", ["xxx", "yyy"], {
 > 📌 import의 대괄호 안에 `ExamAttribute`를 추가하세요.
 
 ```typescript
-(과목).setExam(examAttribute: ExamAttribute)
+Subject.setExam(examAttribute: ExamAttribute)
 ```
 
 - 과목은 `Subject`, `SubjectList`, `MultipleSubject` 모두 가능합니다.
 - `SubjectList`에는 '문학' 처럼 복수 과목이지만 따로 시험을 나누지 않을 때 설정하면 되며,
-- `MultiPleSubject`에는 '수1', '수2' 처럼 복수과목인데 시험을 나누는 과목일 때 설정하면 됩니다.
+- `MultiPleSubject`에는 '수1', '수2' 처럼 복수과목인데 시험을 따로 치는 과목일 때 설정하면 됩니다.
 - `ExamAttribute`는 다음과 같이 생성합니다.
 - ```typescript
   new ExamAttribute(selective: number, descriptive: number)
@@ -117,14 +112,16 @@ _예시_
 History.setExam(
   new ExamAttribute(20, 4)
     .addRange("교과서 처음부터 끝까지")
-    .addRange("배부한 학습지 전체")
-);
+    .addRange("배부한 학습지 전체"));
 // SubjectList에 시험 설정
 Literature.setExam(
-  new ExamAttribute(25, 2).addRange("교과서 전체").addRange("부교재 전체")
-);
+  new ExamAttribute(25, 2)
+    .addRange("교과서 전체")
+    .addRange("부교재 전체"));
 // MultipleSubject에 시험 설정
-Mathmatics[1].setExam(new ExamAttribute(16, 4).addRange("교과서 싹 다"));
+Mathmatics[1].setExam(
+  new ExamAttribute(16, 4)
+    .addRange("교과서 싹 다"));
 ```
 
 ### **4단계: 모의고사와 수능 설정하기**
@@ -139,7 +136,7 @@ Setting.addMoakTest(dateFormat: string)
 Setting.setCSAT(dateFormat: string)
 ```
 
-- `YYYY/MM/DD 형식`으로 작성하세요. 구분자로 '`-`'을 쓰면 IOS 환경에서 오류가 발생합니다.
+- `dateFormat`은 `YYYY/MM/DD 형식`으로 작성하세요. 구분자로 '``-``'을 쓰면 IOS 환경에서 오류가 발생합니다.
 
 _예시_
 
