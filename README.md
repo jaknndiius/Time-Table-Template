@@ -102,7 +102,7 @@ Subject.setExam(examAttribute: ExamAttribute)
   ExamAttribute.addRange(range: string) : ExamAttribute
   ```
   - 과목의 범위 설명 한 줄을 추가하고 자신을 다시 반환합니다.
-  - 자신을 다시 반환하기 때문에, `ExamAttribute`.`addRange`().`addRange`()... 처럼 연쇄적으로 작성할 수 있습니다.
+  - 자신을 다시 반환하기 때문에, `ExamAttribute`.`addRange()`.`addRange()`... 처럼 연쇄적으로 작성할 수 있습니다.
   - 따로 변수에 저장할 필요 없이 바로 `setExam` 메소드에 전달하면 됩니다.
 
 _예시_
@@ -136,7 +136,7 @@ Setting.addMoakTest(dateFormat: string)
 Setting.setCSAT(dateFormat: string)
 ```
 
-- `dateFormat`은 `YYYY/MM/DD 형식`으로 작성하세요. 구분자로 '``-``'을 쓰면 IOS 환경에서 오류가 발생합니다.
+- `dateFormat`은 `YYYY/MM/DD` 형식으로 작성하세요. 구분자로 '``-``'을 쓰면 IOS 환경에서 오류가 발생합니다.
 
 _예시_
 
@@ -208,10 +208,10 @@ Setting.setClassTime(classTime);
 > 📌 import의 대괄호 안에 `Setting`를 추가하세요. 위에서 추가했다면 다시 추가하지 않아도 됩니다.
 
 ```typescript
-Setting.group(...subjects: ...Subject | SubjectList | MultipleSubject): SubjectGroup
+Setting.group(...subjects: Subject[]): SubjectGroup
 ```
 
-- 과목그룹은 `Setting`.`group` 메소드를 사용하며 `SubjectGroup `객체를 반환합니다.
+- 과목그룹은 `Setting`.`group(...subjects: Subject[])` 메소드를 사용하며 `SubjectGroup` 객체를 반환합니다.
 - 과목은 아까 생성한 변수를 전달하세요.
 
 그룹을 생성했다면 이제 시간표를 설정해야 합니다.<br>
@@ -241,13 +241,9 @@ Setting.group(...subjects: ...Subject | SubjectList | MultipleSubject): SubjectG
 _예시_
 
 ```typescript
-Setting.group(Mathmatics[1], History, Literature[3]).setToRegularSchedule(
-  Day.MONDAY
-);
+Setting.group(Mathmatics[1], History, Literature[3]).setToRegularSchedule(Day.MONDAY);
 // 수1, 한국사, 문3 과목을 월요일 시간표로 설정합니다.
-Setting.group(Literature[1], Mathmatics[2], Info[1]).setToRegularSchedule(
-  Day.THEUSDAY
-);
+Setting.group(Literature[1], Mathmatics[2], Info[1]).setToRegularSchedule(Day.THEUSDAY);
 // 문1, 수2, 정보1 과목을 화요일 시간표로 설정합니다.
 
 Setting.group(History, Literature, Mathmatics[3]).setToExamSchedule(5, 1);
@@ -281,15 +277,15 @@ loadPage();
 필수 요소
 |필수 메소드|필요 갯수|
 |---|---|
-|[SubjectGroup.setToRegularSchedule()](#6단계-과목-그룹화-및-시간표-설정)|5개(월~금)|
-|[loadPage()](#7단계-페이지-로드하기)|1개|
+|[SubjectGroup.setToRegularSchedule](#6단계-과목-그룹화-및-시간표-설정)|5개(월~금)|
+|[loadPage](#7단계-페이지-로드하기)|1개|
 
 | 생략 가능한 메소드                                                     | 필요 갯수       | 생략시                            |
 | ---------------------------------------------------------------------- | --------------- | --------------------------------- |
-| [Setting.setClassTime()](#5단계-교시-별-시간-설정하기)                 | 8개             | 시간 별 과목 강조 기능 작동 안됨  |
-| [Setting.addMockTest()](#4단계-모의고사와-수능-설정하기)               | 모의고사 수만큼 | 정보 칸에 모의고사 날짜 확인 불가 |
-| [Setting.setCSAT()](#4단계-모의고사와-수능-설정하기)                   | 1개             | 정보 칸에 수능 날짜 확인 불가     |
-| [SubjectGrouop.setToExamSchedule()](#6단계-과목-그룹화-및-시간표-설정) | 시험일 수만큼   | 시험 시간표 생성 안됨             |
+| [Setting.setClassTime](#5단계-교시-별-시간-설정하기)                 | 8개             | 시간 별 과목 강조 기능 작동 안됨  |
+| [Setting.addMockTest](#4단계-모의고사와-수능-설정하기)               | 모의고사 수만큼 | 정보 칸에 모의고사 날짜 확인 불가 |
+| [Setting.setCSAT](#4단계-모의고사와-수능-설정하기)                   | 1개             | 정보 칸에 수능 날짜 확인 불가     |
+| [SubjectGrouop.setToExamSchedule](#6단계-과목-그룹화-및-시간표-설정) | 시험 일수 만큼   | 시험 시간표 생성 안됨             |
 
 ### **9단계: 사이트 만들기**
 
